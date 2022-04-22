@@ -12,7 +12,7 @@ var q_id = 21;
 var q_meta=21;
 var choices;
 $.ajax({
-    url: "https://dilpreet-kaur-quiz-milestone-2.herokuapp.com/quiz1/api/quiz/list",
+    url: "https://shanbin-shanan-quiz-milestone-01.herokuapp.com/quiz1/api/quiz/list",
 
     method: "get",
     contentType: "json/application",
@@ -36,7 +36,7 @@ if(q_meta != -1){
 
     $.ajax({
         // url: `http://localhost:5000/quiz1/api/quiz/${quiz_choice}/${q_id}`,
-        url: "https://dilpreet-kaur-quiz-milestone-2.herokuapp.com/quiz1/api/quiz?id="+quiz_choice+"&questionid="+q_id,
+        url: "https://shanbin-shanan-quiz-milestone-01.herokuapp.com/quiz1/api/quiz?id="+quiz_choice+"&questionid="+q_id,
 
         // "&uname="+name
         method: "get",
@@ -123,9 +123,9 @@ function quiz1Submit() {
         if (document.getElementById("chkBox4").checked) {
             chkbox_ans_arr.push(document.getElementById("chkBox4").value)
         }
-       url="https://dilpreet-kaur-quiz-milestone-2.herokuapp.com/quiz1/api/quiz_ans?id="+quiz_choice+"&questionid="+q_id+"&user_ans="+chkbox_ans_arr
+       url="https://shanbin-shanan-quiz-milestone-01.herokuapp.com/quiz1/api/quiz_ans?id="+quiz_choice+"&questionid="+q_id+"&user_ans="+chkbox_ans_arr
     }else{
-       url= "https://dilpreet-kaur-quiz-milestone-2.herokuapp.com/quiz1/api/quiz_ans?id="+quiz_choice+"&questionid="+q_id+"&user_ans="+quiz1_current_user_ans
+       url= "https://shanbin-shanan-quiz-milestone-2.herokuapp.com/quiz1/api/quiz_ans?id="+quiz_choice+"&questionid="+q_id+"&user_ans="+quiz1_current_user_ans
     }
 
     $.ajax({
@@ -224,7 +224,7 @@ function openQuiz(evt, quizName) {
             // /:"+quiz_choice
 
             $.ajax({
-                url: `https://dilpreet-kaur-quiz-milestone-2.herokuapp.com/quiz1/api/quiz/${quiz_choice}`,
+                url: `https://shanbin-shanan-quiz-milestone-01.herokuapp.com/quiz1/api/quiz/${quiz_choice}`,
                 method: "get",
                 contentType: "json/application",
                 dataType: 'json',
