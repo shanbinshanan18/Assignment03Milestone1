@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial;
+        }
+
+        h2{
+            font-weight: 300;
+            margin: 0px;
+            padding: 10px;
+            font-size: 20px;
+            background-color: #99ceff;
+            color: #fff;
+            text-align: center;
+        }
+
+        h3{
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        h5, p{
+            font-size: medium;
+            text-align: center;
+        }
+
+        /* Style the name textbox */
+        .form__field {
+	        height: 20px;
+            position: relative;
+            border: 2px solid #cdcdcd;
+            border-color: rgba(0, 0, 0, .14);
+            background-color: AliceBlue;
+            font-size: 14px;
+        }
+        
+        /* Style the choices */
+        #quiz1_q {
+            margin-bottom: 10px;
+            text-align: left;
+            display: inline-block;
+        }
+
+        /* Style the submit button */
+        #submit-btn {
+	        font-size: 15px;
+	        background-color: #99ceff;
+	        color: #fff;
+	        border: 0px;
+	        border-radius: 3px;
+	        padding: 10px;
+	        cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Change background color of buttons on hover */
+        #submit-btn:hover{
+            background-color: #66b5ff;
+        }
+
+        /* Style the tab */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #99ceff;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #66b5ff;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+            background-color:#66b5ff;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        } 
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <h2><b>Computer Science Quiz</b></h2>
+    <h5><b>Enter  Name : </b> <input type="text" class="form__field" id="username"/></h5>
+    <p>Click on a quiz inside the tabbed menu:</p>
+    <h5 id="show-score"></h5>
+    <div class="tab">
+        <button class="tablinks" onclick="openQuiz(event, 'quiz1')">Computer Fundementals</button>
+        <button class="tablinks" onclick="openQuiz(event, 'quiz2')">Programming</button>
+    </div>
+
+    <div id="quiz1" class="tabcontent">
+        <h3 id="quiz1_statement"></h3>
+        <div id="quiz1_q">
+
+        </div>
+        <br><br>
+        <!-- <input onclick="quiz1Submit()" type="submit" value="Submit"> -->
+    </div>
+
+    <div id="quiz2" class="tabcontent">
+        
+    </div>
+    <script src="data.js"></script>
+    <script>
+        var right_answers=0;
+        var quiz1_current_actual_chkbox_ans;
+        var quiz1_array_count = 0;
+        var quiz1_res ;
+        var question_count = 1;
+        var quiz1_current_user_ans = "";
+        var quiz1_current_actual_ans="";
+        var quiz1_current_explanation = ""
+
+        $.ajax({
+            url:"https://my-json-server.typicode.com/dilpreetkaur1/Webdesign_Database/quiz1",
+            method:"get",
+            contentType:"json/application",
+            dataType: 'json',
+            success: function(response){
+                console.log("api response", response)
+                quiz1_res = response;
+            }
+        })
+
+        function showQuiz1() {
+            // multiple choice
+        // console.log("quiz1", quiz1_res)
+
+            $("#quiz1_q").empty()
+            // for(var i=0; i<quiz1_res.length ; i++){
+            if (quiz1_array_count < quiz1_res.length) {
+                document.getElementById("quiz1_statement").innerHTML = question_count + " ) " + quiz1_res[quiz1_array_count].question;
+                quiz1_current_explanation = quiz1_res[quiz1_array_count].explanation;
+                quiz1_current_actual_ans = quiz1_res[quiz1_array_count].answer
+
+                if (quiz1_res[quiz1_array_count].type == "multiple choice") {
+                    // var choices = [];
+                    var choices = quiz1_res[quiz1_array_count].choices
+                    console.log("choices", choices, "  ll ,", choices[0])
+                    $("#quiz1_q").append(
+                        '<input type="radio" id=' + quiz1_res[quiz1_array_count].choices[0] + ' name="mcqRadio"  value="' + quiz1_res[quiz1_array_count].choices[0] + '" onclick="getValue(this.value)"><label for="male">  ' + quiz1_res[quiz1_array_count].choices[0] + '</label><br><input type="radio" id=' + quiz1_res[quiz1_array_count].choices[1] + ' onclick="getValue(this.value)" name="mcqRadio" value="' + quiz1_res[quiz1_array_count].choices[1] + '"><label for="female">  ' + quiz1_res[quiz1_array_count].choices[1] + '</label><br><input type="radio" id=' + quiz1_res[quiz1_array_count].choices[2] + ' onclick="getValue(this.value)" name="mcqRadio" value="' + quiz1_res[quiz1_array_count].choices[2] + '"><label for="other">  ' + quiz1_res[quiz1_array_count].choices[2] + '</label><br><input type="radio" id=' + quiz1_res[quiz1_array_count].choices[3] + ' onclick="getValue(this.value)" name="mcqRadio" value="' + quiz1_res[quiz1_array_count].choices[3] + '"><label for="other">  ' + quiz1_res[quiz1_array_count].choices[3] + '</label><br><input type="radio" id=' + quiz1_res[quiz1_array_count].choices[4] + ' onclick="getValue(this.value)" name="mcqRadio" value="' + quiz1_res[quiz1_array_count].choices[4] + '"><label for="other">  ' + quiz1_res[quiz1_array_count].choices[4] + '</label><br/>');
+                }
+                else if (quiz1_res[quiz1_array_count].type == "fill in the blank") {
+                    $("#quiz1_q").append('  ' + quiz1_res[quiz1_array_count].choices + '<br/> Type answer : ' + '<input type="text" id="fill_blank" onchange="getValue(this.value)" /><br/>')
+
+                }
+                else if (quiz1_res[quiz1_array_count].type == "true/false") {
+                    $("#quiz1_q").append(
+                        '<input type="radio" id=' + quiz1_res[quiz1_array_count].choices[0] + ' name="mcqRadio"  value="' + quiz1_res[quiz1_array_count].choices[0] + '" onclick="getValue(this.value)"><label for="male">  ' + quiz1_res[quiz1_array_count].choices[0] + '</label><br><input type="radio" id=' + quiz1_res[quiz1_array_count].choices[1] + ' onclick="getValue(this.value)" name="mcqRadio" value="' + quiz1_res[quiz1_array_count].choices[1] + '"><label for="female"> b) ' + quiz1_res[quiz1_array_count].choices[1] + '</label><br>'
+                    )
+                }
+                else if (quiz1_res[quiz1_array_count].type == "checkboxes") {
+                    console.log(quiz1_res[quiz1_array_count].answer)
+                    quiz1_current_actual_chkbox_ans = quiz1_res[quiz1_array_count].answer;
+                    console.log(quiz1_current_actual_chkbox_ans)
+
+                    $("#quiz1_q").append(
+                        '<div id="allCheckboxes"><input type="checkbox" id="chkBox1" value="' + quiz1_res[quiz1_array_count].choices[0] + '" name="Box1" />  <label >' + quiz1_res[quiz1_array_count].choices[0] + '<br/><input type="checkbox" id="chkBox2" value="' + quiz1_res[quiz1_array_count].choices[1] + '" name="Box2" />  <label >' + quiz1_res[quiz1_array_count].choices[1] + '<br/><input type="checkbox" id="chkBox3" value="' + quiz1_res[quiz1_array_count].choices[2] + '" name="Box3" />  <label >' + quiz1_res[quiz1_array_count].choices[2] + '<br/><input type="checkbox" id="chkBox4" value="' + quiz1_res[quiz1_array_count].choices[3] + '" name="Box4" />  <label >' + quiz1_res[quiz1_array_count].choices[3] + '<br/></div>'
+                    )
+                }
+
+                else if (quiz1_res[quiz1_array_count].type == "short answer") {
+                    
+                    $("#quiz1_q").append('  ' + quiz1_res[quiz1_array_count].choices + '<br/> Type answer : ' + '<input type="text" id="fill_blank" onchange="getValue(this.value)" /><br/>')
+                }
+
+                $("#quiz1_q").append('<input id="submit-btn" onclick="quiz1Submit()" type="submit" value="Submit">')
+            }
+            // }
+
+        }
+        // $(function () {
+        //     // alert(2)
+        //     $('#allCheckboxes').on("change", ":checkbox", function () {
+        //         if (this.checked) {
+        //             console.log(this.value + ' is checked');
+        //         } else {
+        //             console.log(this.value + ' is unchecked');
+        //         }
+        //     });
+        // });
+
+        function getValue(val) {
+            quiz1_current_user_ans = val;
+        }
+        function quiz1Submit() {
+
+           var uname=  document.getElementById("username").value
+
+
+            if (quiz1_res[quiz1_array_count].type == "checkboxes") {
+                var chkbox_ans_arr = []
+                if (document.getElementById("chkBox1").checked) {
+                    chkbox_ans_arr.push(document.getElementById("chkBox1").value)
+                }
+                if (document.getElementById("chkBox2").checked) {
+                    chkbox_ans_arr.push(document.getElementById("chkBox2").value)
+                }
+                if (document.getElementById("chkBox3").checked) {
+                    chkbox_ans_arr.push(document.getElementById("chkBox3").value)
+                }
+                if (document.getElementById("chkBox4").checked) {
+                    chkbox_ans_arr.push(document.getElementById("chkBox4").value)
+                }
+                // console.log("actualchkbx", quiz1_current_actual_chkbox_ans, chkbox_ans_arr)
+                // console.log("here we go",_.isEqual(quiz1_current_actual_chkbox_ans, chkbox_ans_arr));
+                if (quiz1_current_actual_chkbox_ans.sort().join(',') === chkbox_ans_arr.sort().join(',')) {
+                    $("#quiz1_q").append('<br/> <h4>Good Job !</h4>')
+                    right_answers=right_answers+1;
+
+                    setTimeout(showQuiz1, 1000);
+                }
+                else {
+                    $("#quiz1_q").append('<br/> <h4>' + quiz1_current_explanation + '</h4>   <input type="submit" onclick="gotExplanation()" value="Got It!">')
+                }
+
+
+            } else {
+               
+                if (quiz1_current_user_ans == quiz1_current_actual_ans) {
+                    // alert(1)
+                    $("#quiz1_q").append('<br/> <h4>Good Job !</h4>')
+                    setTimeout(showQuiz1, 1000);
+                    right_answers=right_answers+1;
+                } else {
+                    $("#quiz1_q").append('<br/> <h4>' + quiz1_current_explanation + '</h4>   <input type="submit" onclick="gotExplanation()" value="Got It!">')
+                }
+            }
+            if(question_count == 20){
+                document.getElementById("submit-btn").style.display= "none"
+                document.getElementById("quiz1_statement").style.display= "none"
+
+                var percent= (right_answers * 100)/20
+                if(percent > 80){
+                    alert('Congratulations '+uname+'! You pass the quiz')
+                    // $("#quiz1_q").append('<h1> Congratulations <student name>! You pass the quiz</h1>')
+                }else{
+                    alert('Sorry '+uname+', You failed the quiz')
+                    $("#quiz1_q").append('<h1> Sorry '+uname+', you failed the quiz</h1>')
+
+                    
+                }
+
+            }
+            question_count = question_count + 1;
+            quiz1_array_count = quiz1_array_count + 1;
+          document.getElementById("show-score").innerHTML= "Your score "+ uname +"  : "+right_answers
+
+        }
+        function gotExplanation() {
+            showQuiz1()
+
+        }
+    </script>
+
+    <script>
+        var showQuiz_count=0;
+        function openQuiz(evt, quizName) {
+
+            if (quizName == "quiz1") {
+               if(showQuiz_count==0){
+                showQuiz1();
+               }
+               showQuiz_count= showQuiz_count+1;
+            }
+            else if (quizName == "quiz2") {
+                window.location.href="quiz2.html"
+                // showQuiz2();
+            }
+
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(quizName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
+</body>
+
+</html>
