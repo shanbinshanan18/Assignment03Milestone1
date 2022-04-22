@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <h2><b>Computer Science Quiz</b></h2>
+    <h5><b>Enter Name : </b> <input type="text" class="form__field" id="username" /></h5>
+    <p>Click on a quiz inside the tabbed menu:</p>
+    <h5 id="show-score"></h5>
+    <div class="tab">
+        <button class="tablinks" onclick="openQuiz(event, 'quiz1')">Computer Fundementals</button>
+        <button class="tablinks" onclick="openQuiz(event, 'quiz2')">Programming</button>
+    </div>
+
+    <div id="quiz1" class="tabcontent">
+        <h3 id="quiz1_statement"></h3>
+        <div id="quiz1_q">
+
+        </div>
+        <br><br>
+        <!-- <input onclick="quiz1Submit()" type="submit" value="Submit"> -->
+    </div>
+
+    <div id="quiz2" class="tabcontent">
+
+    </div>
+    <script src="index_milestone2.js"></script> 
+
+</body>
+
+</html>
