@@ -12,7 +12,7 @@ var q_id = 1;
 var q_meta=1;
 var choices;
 $.ajax({
-    url: "https://dilpreet-kaur-quiz-milestone-2.herokuapp.com/quiz1/api/quiz/list",
+    url: "https://shanbin-shanan-quiz-milestone-01.herokuapp.com/quiz1/api/quiz/list",
 
     method: "get",
     contentType: "json/application",
@@ -231,7 +231,7 @@ function openQuiz(evt, quizName) {
             // /:"+quiz_choice
 
             $.ajax({
-                url: `https://dilpreet-kaur-quiz-milestone-2.herokuapp.com/quiz1/api/quiz/${quiz_choice}`,
+                url: `https://shanbin-shanan-quiz-milestone-01.herokuapp.com/quiz1/api/quiz/${quiz_choice}`,
                 method: "get",
                 contentType: "json/application",
                 dataType: 'json',
